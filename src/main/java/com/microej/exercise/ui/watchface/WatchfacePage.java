@@ -16,6 +16,8 @@ import com.microej.exercise.ui.watchface.widget.BatteryLevel;
 import com.microej.exercise.ui.watchface.widget.DigitalClock;
 import com.microej.exercise.ui.watchface.widget.IconLabel;
 import com.microej.exercise.ui.watchface.widget.WatchHands;
+
+import ej.bon.Timer;
 import ej.microui.display.Colors;
 import ej.microui.display.Font;
 import ej.mwt.Widget;
@@ -26,6 +28,10 @@ import ej.mwt.stylesheet.cascading.CascadingStylesheet;
 import ej.mwt.stylesheet.selector.ClassSelector;
 import ej.mwt.stylesheet.selector.TypeSelector;
 import ej.widget.basic.Label;
+import ej.widget.container.Dock;
+import ej.widget.container.LayoutOrientation;
+import ej.widget.container.List;
+import ej.widget.container.SimpleDock;
 
 /**
  * A page that represents a watchface.
@@ -41,6 +47,8 @@ public class WatchfacePage extends Page {
 	private IconLabel distance;
 
 	private BatteryLevel battery;
+
+	private DigitalClock clock;
 
 	@Override
 	public Widget getWidget() {
@@ -64,47 +72,91 @@ public class WatchfacePage extends Page {
 	 * </ul>
 	 */
 	private Widget createDigital() {
+		initializeWidgets();
+		return createWatchFaceLayout();
+	}
+
+	/**
+	 * Creates the hierarchical layout of the watch face UI, composed of widgets
+	 * such as battery level, step count, distance, clock, and heart rate.
+	 *
+	 * @return A vertical {@code Widget} container representing the complete watch face layout.
+	 */
+	private Widget createWatchFaceLayout(){
+		List WatchFaceList = new List(LayoutOrientation.VERTICAL);
+		WatchFaceList.addChild(this.battery);
+
+		List StepsAndDistanceList = new List(LayoutOrientation.HORIZONTAL);
+
+		StepsAndDistanceList.addChild(this.steps);
+		StepsAndDistanceList.addChild(this.distance);
+
+		WatchFaceList.addChild(StepsAndDistanceList);
+
+		WatchFaceList.addChild(this.clock);
+
+		WatchFaceList.addChild(heartRate);
+		return WatchFaceList;
+	}
+
+	/**
+	 * Initializes all the watch face widgets using data retrieved from the {@code Model} instance.
+	 */
+	private void initializeWidgets(){
 		Model model = Model.getInstance();
+		initializeHeartRateWidget(String.valueOf(model.getHeartRate()));
+		initializeStepsWidget(String.valueOf(model.getStepCount()));
+		initializeDistanceWidget(formatDistance(model.getDistance()));
+		initializeClockWidget(TimeHelper.getTimer());
+		initializeBatteryWidget(model.getBatteryLevel());
+	}
 
-		// creates the widget for the heart rate
-		this.heartRate = new IconLabel(Images.HEART_ICON, String.valueOf(model.getHeartRate()));
+	/**
+	 * Initializes the heart rate widget using the given heart rate string and applies styling.
+	 *
+	 * @param heartRateString The heart rate value to display on the widget.
+	 */
+	private void initializeHeartRateWidget(String heartRateString){
+		this.heartRate = new IconLabel(Images.HEART_ICON, heartRateString);
 		this.heartRate.addClassSelector(ClassIdentifiers.HEART_RATE_VALUE);
+	}
 
-		// creates the widget for the step count
-		this.steps = new IconLabel(Images.SHOE_ICON, String.valueOf(model.getStepCount()));
+	/**
+	 * Initializes the steps widget with the given step count string and applies styling.
+	 *
+	 * @param stepsString The number of steps to display.
+	 */
+	private void initializeStepsWidget(String stepsString){
+		this.steps = new IconLabel(Images.SHOE_ICON, stepsString);
 		this.steps.addClassSelector(ClassIdentifiers.STEP_VALUE);
+	}
 
-		// creates the widget for the distance
-		this.distance = new IconLabel(Images.LOCALIZATION_ICON, formatDistance(model.getDistance()));
+	/**
+	 * Initializes the distance widget using the given distance string and applies styling.
+	 *
+	 * @param distanceString The formatted distance value to display.
+	 */
+	private void initializeDistanceWidget(String distanceString){
+		this.distance = new IconLabel(Images.LOCALIZATION_ICON, distanceString);
 		this.distance.addClassSelector(ClassIdentifiers.DISTANCE_VALUE);
+	}
 
-		// creates the widget for the digital clock
-		DigitalClock clock = new DigitalClock(TimeHelper.getTimer());
+	/**
+	 * Initializes the digital clock widget using the provided timer instance.
+	 *
+	 * @param timer A {@code Timer} instance that provides time updates.
+	 */
+	private void initializeClockWidget(Timer timer){
+		this.clock = new DigitalClock(timer);
+	}
 
-		// creates the widget for the battery level indicator
-		this.battery = new BatteryLevel(model.getBatteryLevel());
-
-		/**
-		 * STEP 1: Compose the digital watchface using the widgets above.
-		 *
-		 * Objective: Learn how to compose a view by assembling widgets.
-		 *
-		 * The widgets to use have already been instantiated but they haven't yet been added to a view.
-		 *
-		 * To complete the digital watchface:
-		 *
-		 * 1. Choose one or more containers from the Widget library (see package ej.widget.container).<br>
-		 * 2. Build a consistent hierarchy by adding the widgets to the containers (see COntainer.addChild()).<br>
-		 * 3. Return the root container of the resulting widget hierarchy.
-		 *
-		 * Note: make sure that the 5 widgets are displayed.
-		 *
-		 */
-
-		// WRITE CODE HERE
-
-		// returns a temporary label placeholder, replace with the actual widget
-		return new Label("Digital watchface"); //$NON-NLS-1$
+	/**
+	 * Initializes the battery level widget with the provided battery percentage.
+	 *
+	 * @param batteryLevel The battery level as an integer percentage (0-100).
+	 */
+	private void initializeBatteryWidget(int batteryLevel){
+		this.battery = new BatteryLevel(batteryLevel);
 	}
 
 	/**
