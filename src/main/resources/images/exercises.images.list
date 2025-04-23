@@ -27,3 +27,6 @@
 /images/list/ic_parameters.png:RGB565
 /images/list/ic_twitter.png:RGB565
 
+# Dice Widget
+/images/watchface/D20.png:A8
+

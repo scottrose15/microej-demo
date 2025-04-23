@@ -49,6 +49,8 @@ public class Model extends SimpleObservable {
 	private static final int MAX_BATTERY_LEVEL = 100;
 	private static final int BATTERY_LEVEL_INCREMENT = 5;
 
+	private static final int INITIAL_D20_ROLL = 20;
+
 	/* Data update rate */
 	private static final int UPDATE_PERIOD = 5000;
 
@@ -66,6 +68,8 @@ public class Model extends SimpleObservable {
 
 	private int selectedApplicationIndex;
 
+	private int d20RollAmount;
+
 	private final Random random;
 
 	@Nullable
@@ -78,6 +82,7 @@ public class Model extends SimpleObservable {
 		updateHeartRate();
 		this.selectedApplicationIndex = INITIAL_SELECTED_APPLICATION;
 		this.batteryLevel = INITIAL_BATTERY_LEVEL;
+		this.d20RollAmount = INITIAL_D20_ROLL;
 	}
 
 	/**
@@ -154,6 +159,17 @@ public class Model extends SimpleObservable {
 	}
 
 	/**
+	 * Gets the current D20 roll amount
+	 */
+	public int getD20RollAmount() { return d20RollAmount; }
+
+	/**
+	 * Sets the current D20 roll amount
+	 * @param d20RollAmount a number to set the roll to
+	 */
+	public void setD20RollAmount(int d20RollAmount) { this.d20RollAmount = d20RollAmount; }
+
+	/**
 	 * Starts tracking the user and device data.
 	 *
 	 * <p>
@@ -226,5 +242,4 @@ public class Model extends SimpleObservable {
 		}
 		this.batteryLevel = XMath.limit(this.batteryLevel + BATTERY_LEVEL_INCREMENT, 0, MAX_BATTERY_LEVEL);
 	}
-
 }

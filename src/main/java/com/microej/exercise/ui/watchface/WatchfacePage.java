@@ -14,12 +14,14 @@ import com.microej.exercise.ui.util.Model;
 import com.microej.exercise.ui.util.Page;
 import com.microej.exercise.ui.util.TimeHelper;
 import com.microej.exercise.ui.watchface.stylesheets.BatteryWidgetStyleSheetConfigurator;
+import com.microej.exercise.ui.watchface.stylesheets.D20WidgetStyleSheetConfigurator;
 import com.microej.exercise.ui.watchface.stylesheets.DigitalClockWidgetStyleSheetConfigurator;
 import com.microej.exercise.ui.watchface.stylesheets.DistanceWidgetStyleSheetConfigurator;
 import com.microej.exercise.ui.watchface.stylesheets.HeartRateWidgetStyleSheetConfigurator;
 import com.microej.exercise.ui.watchface.stylesheets.StepWidgetStyleSheetConfigurator;
 import com.microej.exercise.ui.watchface.stylesheets.WatchFaceStyleSheetConfigurator;
 import com.microej.exercise.ui.watchface.widget.BatteryLevel;
+import com.microej.exercise.ui.watchface.widget.D20Die;
 import com.microej.exercise.ui.watchface.widget.DigitalClock;
 import com.microej.exercise.ui.watchface.widget.IconLabel;
 import com.microej.exercise.ui.watchface.widget.WatchHands;
@@ -58,6 +60,8 @@ public class WatchfacePage extends Page {
 	private BatteryLevel battery;
 
 	private DigitalClock clock;
+
+	private D20Die d20;
 
 	@Override
 	public Widget getWidget() {
@@ -101,8 +105,10 @@ public class WatchfacePage extends Page {
 		StepsAndDistanceList.addChild(this.distance);
 
 		WatchFaceList.addChild(StepsAndDistanceList);
-
-		WatchFaceList.addChild(this.clock);
+		List TimeAndDiceList = new List(LayoutOrientation.HORIZONTAL);
+		TimeAndDiceList.addChild(this.clock);
+		TimeAndDiceList.addChild(this.d20);
+		WatchFaceList.addChild(TimeAndDiceList);
 
 		WatchFaceList.addChild(heartRate);
 		return WatchFaceList;
@@ -118,6 +124,7 @@ public class WatchfacePage extends Page {
 		initializeDistanceWidget(formatDistance(model.getDistance()));
 		initializeClockWidget(TimeHelper.getTimer());
 		initializeBatteryWidget(model.getBatteryLevel());
+		initializeD20Widget();
 	}
 
 	/**
@@ -169,6 +176,15 @@ public class WatchfacePage extends Page {
 	}
 
 	/**
+	 * Initializes the D20 widget
+	 *
+	 */
+	private void initializeD20Widget(){
+		this.d20 = new D20Die(Images.D20_ICON);
+		this.d20.addClassSelector(ClassIdentifiers.D20_VALUE);
+	}
+
+	/**
 	 * Creates the widget that represents the analog watchface.
 	 *
 	 * <p>
@@ -190,6 +206,7 @@ public class WatchfacePage extends Page {
 		StyleSheetConfigurators.add(new DistanceWidgetStyleSheetConfigurator());
 		StyleSheetConfigurators.add(new HeartRateWidgetStyleSheetConfigurator());
 		StyleSheetConfigurators.add(new StepWidgetStyleSheetConfigurator());
+		StyleSheetConfigurators.add(new D20WidgetStyleSheetConfigurator());
 		for(StyleSheetConfigurator styleSheetConfigurators: StyleSheetConfigurators){
 			styleSheetConfigurators.configureWidgetStyleSheet(stylesheet);
 		}
@@ -221,6 +238,8 @@ public class WatchfacePage extends Page {
 
 		this.battery.setLevel(model.getBatteryLevel());
 		this.battery.requestRender();
+
+		this.d20.requestRender();
 	}
 
 	private static String formatDistance(float value) {

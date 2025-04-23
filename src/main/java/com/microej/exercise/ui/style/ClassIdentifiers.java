@@ -44,4 +44,7 @@ public class ClassIdentifiers {
 	/** The class identifier for the activity application. */
 	public static final int ACTIVITY = 6;
 
+	/** class identifier for the D20 application */
+	public static final int D20_VALUE = 7;
+
 }

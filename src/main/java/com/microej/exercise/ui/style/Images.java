@@ -31,4 +31,6 @@ public class Images {
 	/** The path to the background image used by the watchface. */
 	public static final String SWOOSH_WATCHFACE_BACKGROUND = "/images/watchface/watchface.png"; //$NON-NLS-1$
 
+	/** The path to the D20 icon image used by the digital watchface */
+	public static final String D20_ICON = "/images/watchface/D20.png";
 }
