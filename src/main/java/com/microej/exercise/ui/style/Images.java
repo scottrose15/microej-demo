@@ -28,4 +28,7 @@ public class Images {
 	/** The path to the background image used by the analog watchface. */
 	public static final String ANALOG_WATCHFACE_BACKGROUND = "/images/watchface/background.png"; //$NON-NLS-1$
 
+	/** The path to the background image used by the watchface. */
+	public static final String SWOOSH_WATCHFACE_BACKGROUND = "/images/watchface/watchface.png"; //$NON-NLS-1$
+
 }

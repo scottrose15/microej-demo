@@ -12,6 +12,7 @@
 /images/watchface/heart.png:A8
 /images/watchface/battery.png:A8
 /images/watchface/localization.png:A8
+/images/watchface/watchface.png:RGB565
 
 # List
 /images/list/ic_about.png:RGB565

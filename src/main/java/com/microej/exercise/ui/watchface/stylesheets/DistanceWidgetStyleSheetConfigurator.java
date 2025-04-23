@@ -7,6 +7,7 @@ import com.microej.exercise.ui.watchface.widget.IconLabel;
 
 import ej.microui.display.Colors;
 import ej.mwt.style.EditableStyle;
+import ej.mwt.style.outline.NoOutline;
 import ej.mwt.stylesheet.cascading.CascadingStylesheet;
 import ej.mwt.stylesheet.selector.ClassSelector;
 
@@ -16,7 +17,9 @@ public class DistanceWidgetStyleSheetConfigurator implements StyleSheetConfigura
         // defines the style of the distance value
         EditableStyle style = stylesheet.getSelectorStyle(new ClassSelector(ClassIdentifiers.DISTANCE_VALUE));
         style.setColor(Colors.WHITE);
-        style.setFont(Fonts.getMediumFont());
+        style.setFont(Fonts.getSmallFont());
+        style.setPadding(NoOutline.NO_OUTLINE);
+
         // sets the color to use for the icon with a custom extra field
         style.setExtraInt(IconLabel.EXTRA_FIELD_ICON_COLOR, Colors.WHITE);
     }
