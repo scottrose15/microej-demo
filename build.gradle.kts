@@ -9,7 +9,10 @@
 plugins {
     id("com.microej.gradle.application") version "1.0.0"
 }
-
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 group = "com.microej.training.ui"
 version = "1.3.0"
 

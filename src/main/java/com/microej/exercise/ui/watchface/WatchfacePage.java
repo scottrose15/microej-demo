@@ -9,13 +9,22 @@ package com.microej.exercise.ui.watchface;
 import com.microej.exercise.ui.style.ClassIdentifiers;
 import com.microej.exercise.ui.style.Fonts;
 import com.microej.exercise.ui.style.Images;
+import com.microej.exercise.ui.style.StyleSheetConfigurator;
 import com.microej.exercise.ui.util.Model;
 import com.microej.exercise.ui.util.Page;
 import com.microej.exercise.ui.util.TimeHelper;
+import com.microej.exercise.ui.watchface.stylesheets.BatteryWidgetStyleSheetConfigurator;
+import com.microej.exercise.ui.watchface.stylesheets.DigitalClockWidgetStyleSheetConfigurator;
+import com.microej.exercise.ui.watchface.stylesheets.DistanceWidgetStyleSheetConfigurator;
+import com.microej.exercise.ui.watchface.stylesheets.HeartRateWidgetStyleSheetConfigurator;
+import com.microej.exercise.ui.watchface.stylesheets.StepWidgetStyleSheetConfigurator;
+import com.microej.exercise.ui.watchface.stylesheets.WatchFaceStyleSheetConfigurator;
 import com.microej.exercise.ui.watchface.widget.BatteryLevel;
 import com.microej.exercise.ui.watchface.widget.DigitalClock;
 import com.microej.exercise.ui.watchface.widget.IconLabel;
 import com.microej.exercise.ui.watchface.widget.WatchHands;
+
+import java.util.ArrayList;
 
 import ej.bon.Timer;
 import ej.microui.display.Colors;
@@ -173,43 +182,17 @@ public class WatchfacePage extends Page {
 
 	@Override
 	public void populateStylesheet(CascadingStylesheet stylesheet) {
-		// defines the style of the root container of the digital watchface
-		EditableStyle style = stylesheet.getSelectorStyle(new ClassSelector(ClassIdentifiers.DIGITAL_WATCHFACE));
-		style.setBackground(new RectangularBackground(Colors.BLACK));
-		style.setPadding(new FlexibleOutline(10, 25, 10, 25));
-
-		// defines the style of the heart rate value
-		style = stylesheet.getSelectorStyle(new ClassSelector(ClassIdentifiers.HEART_RATE_VALUE));
-		style.setColor(Colors.WHITE);
-		Font mediumFont = Fonts.getMediumFont();
-		style.setFont(mediumFont);
-		// sets the color to use for the icon with a custom extra field
-		style.setExtraInt(IconLabel.EXTRA_FIELD_ICON_COLOR, 0xff3131);
-
-		// defines the style of the step value
-		style = stylesheet.getSelectorStyle(new ClassSelector(ClassIdentifiers.STEP_VALUE));
-		style.setColor(Colors.WHITE);
-		style.setFont(mediumFont);
-		// sets the color to use for the icon with a custom extra field
-		style.setExtraInt(IconLabel.EXTRA_FIELD_ICON_COLOR, Colors.WHITE);
-
-		// defines the style of the distance value
-		style = stylesheet.getSelectorStyle(new ClassSelector(ClassIdentifiers.DISTANCE_VALUE));
-		style.setColor(Colors.WHITE);
-		style.setFont(mediumFont);
-		// sets the color to use for the icon with a custom extra field
-		style.setExtraInt(IconLabel.EXTRA_FIELD_ICON_COLOR, Colors.WHITE);
-
-		// defines the style of the digital clock
-		style = stylesheet.getSelectorStyle(new TypeSelector(DigitalClock.class));
-		style.setColor(Colors.WHITE);
-		style.setFont(Fonts.getLargeFont());
-		// sets the font to use for the seconds with a custom extra field
-		style.setExtraObject(DigitalClock.EXTRA_FIELD_SECONDS_FONT, Fonts.getSmallFont());
-
-		// defines the style of the battery level indicator
-		style = stylesheet.getSelectorStyle(new TypeSelector(BatteryLevel.class));
-		style.setColor(Colors.WHITE);
+		// TODO Fix project configuration to use Java version 17 so that streams can be used
+		java.util.List<StyleSheetConfigurator> StyleSheetConfigurators = new ArrayList<>();
+		StyleSheetConfigurators.add(new WatchFaceStyleSheetConfigurator());
+		StyleSheetConfigurators.add(new BatteryWidgetStyleSheetConfigurator());
+		StyleSheetConfigurators.add(new DigitalClockWidgetStyleSheetConfigurator());
+		StyleSheetConfigurators.add(new DistanceWidgetStyleSheetConfigurator());
+		StyleSheetConfigurators.add(new HeartRateWidgetStyleSheetConfigurator());
+		StyleSheetConfigurators.add(new StepWidgetStyleSheetConfigurator());
+		for(StyleSheetConfigurator styleSheetConfigurators: StyleSheetConfigurators){
+			styleSheetConfigurators.configureWidgetStyleSheet(stylesheet);
+		}
 	}
 
 	/**
