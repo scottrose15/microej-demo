@@ -27,7 +27,9 @@ In this fork of the tutorial code, I implemented the following changes
 
 Here is a gif of the UI updates
 
-![hippo](https://github.com/scottrose15/microej-demo/blob/step/1/MicroEJ%20Watch.gif)
+.. image:: https://github.com/scottrose15/microej-demo/blob/step/1/MicroEJ%20Watch.gif
+   :alt: sdk_6.0 badge
+   :align: left
 
 Note: This version of the training is compatible with `MICROEJ SDK 6 <https://docs.microej.com/en/latest/SDK6UserGuide/index.html>`_ only.
 
